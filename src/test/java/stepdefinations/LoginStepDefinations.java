@@ -1,16 +1,15 @@
 package stepdefinations;
 
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
+import hooks.TestHooks;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageclasses.CustomerRegistrationPage;
 import pageclasses.HomePage;
+import pageclasses.LoginPage;
 import pageclasses.SignInPage;
-
-import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 
@@ -20,16 +19,11 @@ public class LoginStepDefinations {
 	HomePage hp;
 	CustomerRegistrationPage crPage;
 	SignInPage siPage;
-
-	@Given("Browser is launched successfully")
-	public void browser_is_launched_successfully() {
-		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.manage().window().maximize();
-	}
+	LoginPage logPage;
 
 	@Given("User can access software testing site {string}")
 	public void user_can_access_software_testing_site(String url) {
+		driver = TestHooks.driver;
 		driver.get(url);
 	}
 
@@ -77,9 +71,26 @@ public class LoginStepDefinations {
 		Assert.assertEquals(isRegisterButtonDisplayed, true);
 	}
 
-	@Then("Browser is closed")
-	public void browser_is_closed() {
-		driver.quit();
+	@When("User enters email {string}")
+	public void user_enters_email(String string) {
+		logPage = new LoginPage(driver);
+		logPage.enterEmail(string);
+	}
+
+	@When("User enters password {string}")
+	public void user_enters_password(String string) {
+		logPage.enterPassword(string);
+	}
+
+	@When("User click on login button")
+	public void user_click_on_login_button() {
+		logPage.clickOnLoginButton();
+	}
+
+	@Then("Validate the message")
+	public void validate_the_message() {
+		String invalidMsg = logPage.invalidEmailorPassword();
+		Assert.assertEquals(invalidMsg, "Invalid email or password");
 	}
 
 }
