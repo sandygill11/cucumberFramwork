@@ -11,11 +11,13 @@ import pageclasses.HomePage;
 import pageclasses.LoginPage;
 import pageclasses.SignInPage;
 
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
 
 public class LoginStepDefinations {
 
-	WebDriver driver;
+	WebDriver driver = TestHooks.driver;
 	HomePage hp;
 	CustomerRegistrationPage crPage;
 	SignInPage siPage;
@@ -23,21 +25,22 @@ public class LoginStepDefinations {
 
 	@Given("User can access software testing site {string}")
 	public void user_can_access_software_testing_site(String url) {
-		driver = TestHooks.driver;
+		//driver = TestHooks.driver;
 		driver.get(url);
 	}
 
 	@When("User clicks on Sign In option from menu")
-	public void user_clicks_on_sign_in_option_from_menu() {
+	public void user_clicks_on_sign_in_option_from_menu() throws NumberFormatException, IOException {
 
 		hp = new HomePage(driver);
 		hp.clickSignIn();
+		logPage = new LoginPage(driver);
 
 		// driver.findElement(By.xpath("//a[text()='Sign in']")).click();
 	}
 
 	@When("User clicks on Register your account")
-	public void user_clicks_on_register_your_account() {
+	public void user_clicks_on_register_your_account() throws NumberFormatException, IOException {
 
 		siPage = new SignInPage(driver);
 		siPage.clickOnRegisterAccount();
@@ -73,7 +76,7 @@ public class LoginStepDefinations {
 
 	@When("User enters email {string}")
 	public void user_enters_email(String string) {
-		logPage = new LoginPage(driver);
+		//logPage = new LoginPage(driver);
 		logPage.enterEmail(string);
 	}
 
